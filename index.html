@@ -667,15 +667,20 @@
                 Video</button>
             </div> -->
             <div style="position:relative; display:flex; left:295px; top:20px">
-              <div style="display:flex">
+              <div id="edit-popup-btn" style="display:flex; cursor:pointer">
                 <i class="fas fa-film"></i>
                 <h4 style="margin-top:0px;margin-left:10px">Edit</h4>
               </div>
-              <i style="margin-left:240px" class="fas fa-ellipsis-h"></i>
+              <i onclick="dotToRemove()" id="dot" style="margin-left:240px; cursor:pointer"
+                class="fas fa-ellipsis-h"></i>
+              <div onclick="removeToDot()" id="dot-with-remove" style="display:none">
+                <i style="margin-left:230px; cursor:pointer" class="fas fa-ellipsis-h"></i><br>
+                <button style="margin-left:200px; cursor:pointer">Remove</button>
+              </div>
             </div>
 
-            <div
-              style="position:relative; width:200px; height:150px; background:white; left:650px; top:-320px; border:3px dotted gray; border-radius:25px">
+            <div id="attach-video-popup-btn"
+              style="position:relative; cursor:pointer; width:200px; height:150px; background:white; left:650px; top:-320px; border:3px dotted gray; border-radius:25px">
               <div style="margin-top:60px">
                 <i style="font-size:25px" class="fas fa-plus"></i>
                 <h4>Attach Video</h4>
@@ -759,6 +764,44 @@
           </div>
         </div>
 
+      </div>
+    </div>
+
+    <!-- Popup Edit Modal Here -->
+    <div id="popUpForEdit" class="trim-modal">
+      <div
+        style="background:white;width:500px; height:570px;overflow: auto; margin-top: -10px;margin-left:50px; border-radius:20px; box-shadow: 0px 5px 20px 10px #888888;">
+        <div style="height:40px">
+          <h3 style="margin:20px">Edit Popup</h3>
+        </div>
+        <div style="height:400px; background:lightgray">
+          <p style="padding:20px"><span style="color:red">Libraries /</span> Collection 1</p>
+        </div>
+        <div>
+          <button
+            style="border-radius:26px; background:rgb(144, 8, 8); padding:10px; margin-left:350px;margin-top:10px; border:none; color:white; width:100px; cursor:pointer"
+            class="trim-cross">Back
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popup Attach Video Modal Here -->
+    <div id="popUp-Attach-Video" class="trim-modal">
+      <div
+        style="background:white;width:500px; height:570px;overflow: auto; margin-top: -10px;margin-left:50px; border-radius:20px; box-shadow: 0px 5px 20px 10px #888888;">
+        <div style="height:40px">
+          <h3 style="margin:20px">Attach Video Popup</h3>
+        </div>
+        <div style="height:400px; background:lightgray">
+          <p style="padding:20px"><span style="color:red">Libraries /</span> Collection 1</p>
+        </div>
+        <div>
+          <button
+            style="border-radius:26px; background:rgb(144, 8, 8); padding:10px; margin-left:350px;margin-top:10px; border:none; color:white; width:100px; cursor:pointer"
+            class="trim-cross">Back
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1785,9 +1828,10 @@
                   <h3 style="font-family:Poppins;font-style:normal;font-weight:600; font-size:18px;">Reply by TalkMail?
                   </h3>
                   <div style="display:flex">
-                    <button style="border:1px solid lightgray; border-radius:5px;padding:5px; width:45px">Yes</button>
                     <button
-                      style="border:1px solid lightgray; border-radius:5px;padding:5px; width:45px; margin-left:10px">No</button>
+                      style="border:1px solid lightgray; border-radius:5px;padding:5px; width:45px; cursor:pointer">Yes</button>
+                    <button
+                      style="border:1px solid lightgray; border-radius:5px;padding:5px; width:45px; margin-left:10px; cursor:pointer">No</button>
                   </div>
                 </div>
               </div>
@@ -2264,20 +2308,42 @@
 
 
     <script>
-
       // // Get Trim modal
       // var trimModal = document.getElementById("trimModal");
       // var trimBtn = document.getElementById("trim");
+      var editPopUpBtn = document.getElementById("edit-popup-btn");
+      var popUpEdit = document.getElementById("popUpForEdit");
+      // Attach video Popup
+      var attachVideoBtn = document.getElementById("attach-video-popup-btn");
+      var popUpAttachVideo = document.getElementById("popUp-Attach-Video");
 
       // // When the user clicks the trim button, open the modal 
       // trimBtn.onclick = function () {
       //   trimModal.style.display = "block";
       // }
+      // When the user clicks the trim button, open the modal (Edit popup)
+      editPopUpBtn.onclick = function () {
+        popUpEdit.style.display = "block";
+      }
+      // When the user clicks the trim button, open the modal (Attach Video popup)
+      attachVideoBtn.onclick = function () {
+        popUpAttachVideo.style.display = "block";
+      }
       // // When the user clicks on <span> (x), close the modal
       //   var trimClose = document.getElementsByClassName("trim-cross")[0];
       //   trimClose.onclick = function () {
       //     trimModal.style.display = "none";
       // }
+      // When the user clicks on <span> (x), close the modal
+      var editPopUpClose = document.getElementsByClassName("trim-cross")[0];
+      editPopUpClose.onclick = function () {
+        popUpEdit.style.display = "none";
+      }
+      // When the user clicks on <span> (x), close the modal (Attach video close)
+      var attachVideoClose = document.getElementsByClassName("trim-cross")[1];
+      attachVideoClose.onclick = function () {
+        popUpAttachVideo.style.display = "none";
+      }
 
       // // Get Attach Video modal
       // var attachVideoModal = document.getElementById("attachModal");
@@ -2533,6 +2599,18 @@
       function screenShareInactive() {
         activeScreenShare.style.display = "block";
         inActiveScreenShare.style.display = "none"
+      }
+      // Toggle Edit Dot
+      var justDot = document.getElementById("dot");
+      var dotWithRemove = document.getElementById("dot-with-remove");
+      function dotToRemove() {
+        justDot.style.display = "none";
+        dotWithRemove.style.display = "block";
+        console.log("clicked");
+      }
+      function removeToDot() {
+        justDot.style.display = "block";
+        dotWithRemove.style.display = "none"
       }
 
       /* New video Functions from here */
